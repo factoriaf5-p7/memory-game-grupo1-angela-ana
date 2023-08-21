@@ -1,8 +1,8 @@
-import Game from '../pages/Game'; // Asegúrate de que la ruta a tu componente sea correcta
 import { render } from '@testing-library/react';
+import Hero from '../pages/Hero';
 
 describe('Game Component', () => {
     it('renders without errors', () => {
-      render(<Game />);
+      render(<Hero />);
     });
   });
