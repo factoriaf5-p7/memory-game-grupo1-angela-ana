@@ -1,5 +1,5 @@
 import Game from '../pages/Game'; // Asegúrate de que la ruta a tu componente sea correcta
-import { render } from 'vitest/react';
+import { render } from '@testing-library/react';
 
 describe('Game Component', () => {
     it('renders without errors', () => {
