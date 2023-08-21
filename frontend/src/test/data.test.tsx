@@ -1,4 +1,4 @@
-import { cards } from '../../data/data.ts'; // Asegúrate de proporcionar la ruta correcta
+import cards from '../../data/data.json';
 
 describe('Cards Data', () => {
   it('should contain expected cards data', () => {
