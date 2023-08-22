@@ -1,15 +1,28 @@
-export interface CardProps {
-    name: string;
-    img: string;
+import React, { useState } from 'react';
+
+interface Card {
+  name: string;
+  img: string;
 }
 
-function Card({ name, img }: CardProps) {
+interface CardProps {
+  card: Card;
+  handleCardClick: (card: Card) => void;
+}
+
+function Card({ card, handleCardClick }: CardProps) {
+  const [flipped, setFlipped] = useState(false);
+
+  const handleFlip = () => {
+    setFlipped(!flipped);
+    handleCardClick(card);
+  };
+
   return (
-    <div>
-        <img src={img} alt={name} />
-        <p>{name}</p>
+    <div className={`card ${flipped ? 'flipped' : ''}`} onClick={handleFlip}>
+      {/* Renderiza el contenido de la carta aquí */}
     </div>
-  )
+  );
 }
 
-export default Card
+export default Card;
