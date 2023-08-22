@@ -1,0 +1,14 @@
+.container-board {
+  display: flex;
+  justify-content: center;
+}
+
+
+.board {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(6, 100px);
+  grid-template-rows: repeat(4, 100px);
+  top: 20px;
+  user-select: none;
+}

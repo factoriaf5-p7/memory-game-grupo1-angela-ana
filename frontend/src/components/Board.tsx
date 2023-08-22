@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { CardProps } from './Card'; // Asegúrate de importar correctamente CardProps
-import './card.css';
-import { AxiosResponse } from 'axios';
-import { getThemes } from '@/services/lib/themes';
+import { getThemes } from "@/services/lib/themes";
+import { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import  CardProps  from "./Card";
+import "./board.css";
+
 function shuffleArray<T>(array: T[]): T[] {
   const shuffledArray = [...array];
   for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -11,70 +12,48 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffledArray;
 }
+
 function Board() {
   const [themes, setThemes] = useState<CardProps[]>([]);
-    const [randomThemes, setRandomThemes] = useState<CardProps[]>([]);
+  const [randomThemes, setRandomThemes] = useState<CardProps[]>([]);
 
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
-  const [pairsClicked, setPairsClicked] = useState<number>(0);
-  const [pairsGuessed, setPairsGuessed] = useState<number>(0);
   useEffect(() => {
-    // Simula la obtención de temas y configuración de las cartas
+    // Definir una función asincrónica dentro del useEffect para poder usar 'await'
     const fetchThemes = async () => {
       try {
         const response: AxiosResponse = await getThemes();
-            // console.log(response.data.data);
-            setThemes(response.data);
-            setRandomThemes(shuffleArray(response.data));
-        const exampleThemes: CardProps[] = [
-          // Aquí configura tus temas como necesites
-        ];
-        setThemes(exampleThemes);
+        // console.log(response.data.data);
+        setThemes(response.data);
+        setRandomThemes(shuffleArray(response.data));
       } catch (error) {
-        console.error('Error al obtener las cartas:', error);
+        console.error("Error al obtener las cartas:", error);
       }
     };
+
     fetchThemes();
   }, []);
-  const handleCardClick = (index: number) => {
-    if (flippedCards.length < 2 && !flippedCards.includes(index)) {
-      setFlippedCards([...flippedCards, index]);
-    }
-    if (flippedCards.length === 1 && !flippedCards.includes(index)) {
-      const firstCardIndex = flippedCards[0];
-      const match = themes[firstCardIndex].img === themes[index].img;
-      if (match) {
-        setPairsGuessed(pairsGuessed + 2);
-      } else {
-        setTimeout(() => {
-          setFlippedCards([]);
-        }, 1000);
-      }
-      setPairsClicked(pairsClicked + 2);
-    }
-  };
 
+  useEffect(() => {
+    console.log(themes);
+  }, [themes]);
   return (
-    <div className="memory-game">
-      <div className="card-container">
-        {randomThemes.map((theme, index) => (
-          <div
-            key={index}
-            className={`card ${flippedCards.includes(index) ? 'flipped' : ''}`}
-            onClick={() => handleCardClick(index)}
-          >
-            <p>{theme.name}</p>
-            <img
-              src={`https://res.cloudinary.com/drjyg98uv/image/upload/v1692700208/memory-game/${theme.img}`}
-              alt={theme.name}
-            />
-          </div>
-        ))}
+    <div className="container-board">
+      <div className="board">
+        {randomThemes &&
+          randomThemes.map((theme, index) => (
+            <div key={index} className="clone">
+              <div className="face">
+                {/* <p>{theme.name}</p> */}
+                <img
+                  src={`https://res.cloudinary.com/drjyg98uv/image/upload/v1692700208/memory-game/${theme.img}`}
+                  alt={theme.name}
+                />
+              </div>
+            </div>
+          ))}
       </div>
-      <p>Pairs Clicked: {pairsClicked}</p>
-      <p>Pairs Guessed: {pairsGuessed}</p>
-      <p>Game Finished: {pairsGuessed === themes.length ? 'Yes' : 'No'}</p>
     </div>
   );
 }
+
 export default Board;
