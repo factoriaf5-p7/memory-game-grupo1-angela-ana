@@ -1,6 +1,10 @@
+import Board from "@/components/Board"
+
 function Game() {
   return (
-    <div>Game</div>
+    <>
+    <Board />
+    </>
   )
 }
 
