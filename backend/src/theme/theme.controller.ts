@@ -1,34 +1,34 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ThemesService } from './themes.service';
+import { ThemeService } from './theme.service';
 import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
 
-@Controller('themes')
-export class ThemesController {
-  constructor(private readonly themesService: ThemesService) {}
+@Controller('theme')
+export class ThemeController {
+  constructor(private readonly themeService: ThemeService) {}
 
   @Post()
   create(@Body() createThemeDto: CreateThemeDto) {
-    return this.themesService.create(createThemeDto);
+    return this.themeService.create(createThemeDto);
   }
 
   @Get()
   findAll() {
-    return this.themesService.findAll();
+    return this.themeService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.themesService.findOne(+id);
+    return this.themeService.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateThemeDto: UpdateThemeDto) {
-    return this.themesService.update(+id, updateThemeDto);
+    return this.themeService.update(+id, updateThemeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.themesService.remove(+id);
+    return this.themeService.remove(+id);
   }
 }

@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateThemeDto } from './dto/create-theme.dto';
 import { UpdateThemeDto } from './dto/update-theme.dto';
+import * as data from '../../data/data.json';
 
 @Injectable()
-export class ThemesService {
+export class ThemeService {
   create(createThemeDto: CreateThemeDto) {
     return 'This action adds a new theme';
   }
 
   findAll() {
-    return `This action returns all themes`;
+    return data;
   }
 
   findOne(id: number) {
