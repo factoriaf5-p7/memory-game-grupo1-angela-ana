@@ -5,5 +5,11 @@
 }
 
 body {
-  
+  background-image: url('https://res.cloudinary.com/drjyg98uv/image/upload/v1692713316/memory-game/background-heroes.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  z-index: -5;
 }

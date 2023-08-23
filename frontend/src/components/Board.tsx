@@ -2,21 +2,20 @@ import { getThemes } from "@/services/lib/themes";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { CardProps } from "./Card";
-import './board.css'
+import "./board.css";
 
 function shuffleArray<T>(array: T[]): T[] {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
+  const shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
   }
+  return shuffledArray;
+}
 
 function Board() {
   const [themes, setThemes] = useState<CardProps[]>([]);
   const [randomThemes, setRandomThemes] = useState<CardProps[]>([]);
-
 
   useEffect(() => {
     // Definir una función asincrónica dentro del useEffect para poder usar 'await'
@@ -39,23 +38,22 @@ function Board() {
   }, [themes]);
   return (
     <div className="container-board">
-
-    <div className="board">
-      {randomThemes &&
-        randomThemes.map((theme, index) => (
-            <div key={index} className="clone">
-            <div className="face">
-
-            {/* <p>{theme.name}</p> */}
-            <img
-              src={`https://res.cloudinary.com/drjyg98uv/image/upload/v1692700208/memory-game/${theme.img}`}
-              alt={theme.name}
-              />
+      <h1>Memory Game</h1>
+      <div className="board">
+        {randomThemes &&
+          randomThemes.map((theme, index) => (
+            <div key={index}>
+              <div className="card">
+                {/* <p>{theme.name}</p> */}
+                <img
+                  src={`https://res.cloudinary.com/drjyg98uv/image/upload/v1692700208/memory-game/${theme.img}`}
+                  alt={theme.name}
+                />
               </div>
-          </div>
-        ))}
+            </div>
+          ))}
+      </div>
     </div>
-        </div>
   );
 }
 
