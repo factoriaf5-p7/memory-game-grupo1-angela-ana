@@ -1,7 +1,7 @@
 import { getThemes } from "@/services/lib/themes";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import  CardProps  from "./Card";
+import { CardProps } from "./Card";
 import "./board.css";
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -38,11 +38,12 @@ function Board() {
   }, [themes]);
   return (
     <div className="container-board">
+      <h1>Memory Game</h1>
       <div className="board">
         {randomThemes &&
           randomThemes.map((theme, index) => (
-            <div key={index} className="clone">
-              <div className="face">
+            <div key={index}>
+              <div className="card">
                 {/* <p>{theme.name}</p> */}
                 <img
                   src={`https://res.cloudinary.com/drjyg98uv/image/upload/v1692700208/memory-game/${theme.img}`}
