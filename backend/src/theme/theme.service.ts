@@ -1,27 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateThemeDto } from './dto/create-theme.dto';
-import { UpdateThemeDto } from './dto/update-theme.dto';
-import * as data from '../../data/data.json';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Theme } from './interfaces/theme.interface';
+import { CreateThemeDTO } from './dto/theme.dto';
 
 @Injectable()
 export class ThemeService {
-  create(createThemeDto: CreateThemeDto) {
-    return 'This action adds a new theme';
+  constructor(
+    @InjectModel('Theme') private readonly themeModel: Model<Theme>,
+  ) {}
+
+  async findAll(): Promise<Theme[]> {
+    const users = await this.themeModel.find();
+    return users;
   }
 
-  findAll() {
-    return data;
+  async findOne(id: string): Promise<Theme> {
+    const user = await this.themeModel.findById(id);
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} theme`;
+  async create(createThemeDTO: CreateThemeDTO): Promise<Theme> {
+    const theme = new this.themeModel(createThemeDTO);
+    return await theme.save();
   }
 
-  update(id: number, updateThemeDto: UpdateThemeDto) {
-    return `This action updates a #${id} theme`;
+  async delete(id: string): Promise<Theme> {
+    const deletedTheme = await this.themeModel.findByIdAndDelete(id);
+    return deletedTheme;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} theme`;
+  async update(id: string, createThemeDTO: CreateThemeDTO): Promise<Theme> {
+    const updatedTheme = await this.themeModel.findByIdAndUpdate(
+      id,
+      createThemeDTO,
+      { new: true },
+    );
+    return updatedTheme;
   }
 }

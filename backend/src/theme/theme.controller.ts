@@ -1,16 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { ThemeService } from './theme.service';
-import { CreateThemeDto } from './dto/create-theme.dto';
-import { UpdateThemeDto } from './dto/update-theme.dto';
+import { CreateThemeDTO } from './dto/theme.dto';
 
 @Controller('theme')
 export class ThemeController {
-  constructor(private readonly themeService: ThemeService) {}
-
-  @Post()
-  create(@Body() createThemeDto: CreateThemeDto) {
-    return this.themeService.create(createThemeDto);
-  }
+  constructor(private themeService: ThemeService) {}
 
   @Get()
   findAll() {
@@ -19,16 +24,29 @@ export class ThemeController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.themeService.findOne(+id);
+    return this.themeService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateThemeDto: UpdateThemeDto) {
-    return this.themeService.update(+id, updateThemeDto);
+  @Post()
+  async create(@Body() createThemeDTO: CreateThemeDTO) {
+    return await this.themeService.create(createThemeDTO);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.themeService.remove(+id);
+  delete(@Res() res, @Param('id') id: string) {
+    const deletedProject = this.themeService.delete(id);
+    return res.status(HttpStatus.OK).json({
+      message: 'Theme deleted successfully',
+    });
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() createThemeDTO: CreateThemeDTO,
+  ) {
+    const updatedTheme = await this.themeService.update(id, createThemeDTO);
+    if (!updatedTheme) throw new NotFoundException('Project not found');
+    return updatedTheme;
   }
 }

@@ -1,9 +1,11 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema } from 'mongoose';
 
-@Schema({ timestamps: true })
-export class Superhero {
-  name: string;
-  img: string;
-}
-
-export const SuperheroSchema = SchemaFactory.createForClass(Superhero);
+export const ThemeSchema = new Schema({
+  name: { type: String, required: true },
+  cards: [
+    {
+      cardname: { type: String, required: true },
+      cardimg: { type: String, required: true },
+    },
+  ],
+});
