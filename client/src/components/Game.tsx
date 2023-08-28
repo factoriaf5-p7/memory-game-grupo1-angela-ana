@@ -19,7 +19,7 @@ export interface CardsUpdated extends Cards {
 export const Game = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const { themes, loading } = useThemeFetcher();
+  // const { themes, loading } = useThemeFetcher();
 
   function getSelectedTheme(themes: Theme[]) {
     // Verificar si hay un tema guardado en el local storage
@@ -39,9 +39,9 @@ export const Game = () => {
   }
 
   // Uso de la función para obtener el tema seleccionado
-  const selectedTheme = getSelectedTheme(themes);
+  // const selectedTheme = getSelectedTheme(themes);
 
-  console.log(selectedTheme);
+  // console.log(selectedTheme);
   // console.log(selectedTheme.cards);
 
   const dataRandom = random(data);
@@ -51,8 +51,8 @@ export const Game = () => {
     flipped: false,
   }));
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
-  let [clickCount, setClickCount] = useState<number>(0);
-  let [pairCount, setPairCount] = useState<number>(0);
+  const [clickCount, setClickCount] = useState<number>(0);
+  const [pairCount, setPairCount] = useState<number>(0);
 
   //  FUNCION AL CLICK !
 
