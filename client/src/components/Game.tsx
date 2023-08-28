@@ -1,10 +1,8 @@
 import { random } from "@/utils/random";
 import data from "../data/data.json";
 import { useEffect, useState } from "react";
-import ThemeFetcher from '../service/ThemeCompleteFetch';
-
-
-
+import useThemeFetcher from "../service/ThemeCompleteFetch";
+import { Theme } from "@/interface/ThemeInterface";
 
 export interface Cards {
   name: string;
@@ -21,6 +19,31 @@ export interface CardsUpdated extends Cards {
 export const Game = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
+  const { themes, loading } = useThemeFetcher();
+
+  function getSelectedTheme(themes: Theme[]) {
+    // Verificar si hay un tema guardado en el local storage
+    const localTheme = localStorage.getItem("localTheme");
+    // Si no hay un tema en el almacenamiento local, selecciona el primero de la lista
+    if (!localTheme) {
+      return themes[0];
+    }
+    // Encuentra el tema en themes que coincide con el tema guardado en el almacenamiento local
+    const selectedTheme = themes.find((theme) => theme.name === localTheme);
+    // Si se encontró un tema que coincide, devuélvelo; de lo contrario, selecciona el primero
+    if (selectedTheme) {
+      return selectedTheme;
+    } else {
+      return themes[0];
+    }
+  }
+
+  // Uso de la función para obtener el tema seleccionado
+  const selectedTheme = getSelectedTheme(themes);
+
+  console.log(selectedTheme);
+  // console.log(selectedTheme.cards);
+
   const dataRandom = random(data);
   const shuffleData = dataRandom.map((card, index) => ({
     ...card,
@@ -30,14 +53,6 @@ export const Game = () => {
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
   let [clickCount, setClickCount] = useState<number>(0);
   let [pairCount, setPairCount] = useState<number>(0);
-  
-  const { themes, loading } = ThemeFetcher();
-
-    
-console.log(themes)
-
-
-
 
   //  FUNCION AL CLICK !
 
@@ -89,8 +104,6 @@ console.log(themes)
       return () => clearTimeout(timeout);
     }
   }, [flippedCards, cards, matchedPairs]);
-
-
 
   return (
     <>

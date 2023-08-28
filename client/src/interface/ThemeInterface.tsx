@@ -1,7 +1,7 @@
- export interface Theme {
+export interface Theme {
+  name: string;
+  cards: {
     name: string;
-    cards: {
-        cardname: string;
-        cardimg: string;
-    }[];
+    img: string;
+  }[];
 }
