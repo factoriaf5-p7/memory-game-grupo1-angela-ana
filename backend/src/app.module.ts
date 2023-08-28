@@ -9,7 +9,9 @@ import { ThemeModule } from './theme/theme.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(
+      'mongodb+srv://memory:memory1234@clustertito.6d2esmg.mongodb.net/memory',
+    ),
     UserModule,
     ThemeModule,
   ],
