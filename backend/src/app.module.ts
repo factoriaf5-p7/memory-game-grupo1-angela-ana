@@ -4,12 +4,12 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ThemeModule } from './theme/theme.module';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://memory:memory1234@clustertito.6d2esmg.mongodb.net/memory',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_URI),
     UserModule,
     ThemeModule,
   ],
