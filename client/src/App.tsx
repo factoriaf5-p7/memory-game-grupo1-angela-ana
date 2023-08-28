@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements } from "r
 import { Routes } from "@/routes";
 import './assets/styles/index.css'
 
+
 const router = createBrowserRouter(createRoutesFromElements(Routes))
 const App = () => <RouterProvider router={router} />;
 

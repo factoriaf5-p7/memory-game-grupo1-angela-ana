@@ -1,6 +1,10 @@
 import { random } from "@/utils/random";
 import data from "../data/data.json";
 import { useEffect, useState } from "react";
+import ThemeFetcher from '../service/ThemeCompleteFetch';
+
+
+
 
 export interface Cards {
   name: string;
@@ -17,12 +21,28 @@ export interface CardsUpdated extends Cards {
 export const Game = () => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const shuffleData = random(
-    data.map((card, index) => ({ ...card, index: index, flipped: false }))
-  );
+  const dataRandom = random(data);
+  const shuffleData = dataRandom.map((card, index) => ({
+    ...card,
+    index: index,
+    flipped: false,
+  }));
   const [cards, setCards] = useState<CardsUpdated[]>(shuffleData);
+  let [clickCount, setClickCount] = useState<number>(0);
+  let [pairCount, setPairCount] = useState<number>(0);
+  
+  const { themes, loading } = ThemeFetcher();
+
+    
+console.log(themes)
+
+
+
+
+  //  FUNCION AL CLICK !
 
   const handleCardClick = (cardIndex: number) => {
+    setClickCount((prevClickCount) => prevClickCount + 1);
     if (
       flippedCards.length === 2 ||
       matchedPairs.includes(cards[cardIndex].name)
@@ -43,7 +63,6 @@ export const Game = () => {
     if (flippedCards.length === 1 && flippedCards[0] !== cardIndex) {
       if (cards[flippedCards[0]].name === cards[cardIndex].name) {
         setMatchedPairs([...matchedPairs, cards[cardIndex].name]);
-        console.log("hola");
       }
     }
   };
@@ -54,6 +73,7 @@ export const Game = () => {
         const updatedCards = cards.map((card) => {
           if (flippedCards.includes(card.index)) {
             if (matchedPairs.includes(card.name)) {
+              setPairCount((prevPairCount) => prevPairCount + 0.5);
               return { ...card, flipped: true };
             } else {
               return { ...card, flipped: false };
@@ -61,10 +81,6 @@ export const Game = () => {
           }
           return card;
         });
-        console.log(cards);
-        console.log(flippedCards);
-        console.log("matched cards");
-        console.log(matchedPairs);
 
         setCards(updatedCards);
         setFlippedCards([]);
@@ -72,9 +88,9 @@ export const Game = () => {
 
       return () => clearTimeout(timeout);
     }
-    console.log(cards);
-    console.log(flippedCards);
   }, [flippedCards, cards, matchedPairs]);
+
+
 
   return (
     <>
@@ -99,136 +115,12 @@ export const Game = () => {
       <div id="score">
         <h2>Score </h2>
         <p>
-          Pairs Clicked: <span id="pairs_clicked">0</span>
+          Cards Clicked: <span id="pairs_clicked">{clickCount}</span>
         </p>
         <p>
-          Pairs Guessed: <span id="pairs_guessed">0</span>
+          Pairs Guessed: <span id="pairs_guessed">{pairCount}</span>
         </p>
       </div>
     </>
   );
 };
-
-// export const Game = () => {
-//   const imgRoute = "src/assets/img/";
-//   const [cardsRandom, setCardsRandom] = useState<CardsUpdated[]>([]);
-//   const [flippedCards, setFlippedCards] = useState<CardsUpdated[]>([]);
-
-//   const compareCards = (nombre1: string, nombre2: string) =>
-//     nombre1 === nombre2;
-
-//   const flippedTrue = (array: CardsUpdated[]) => {
-//     // Utiliza map para crear un nuevo array con las propiedades actualizadas
-//     return array.map((card) => ({
-//       ...card,
-//       flipped: true,
-//     }));
-//   };
-
-//   const matchCards = (array: CardsUpdated[]) => {
-//     // Utiliza map para crear un nuevo array con las propiedades actualizadas
-//     return array.map((card) => ({
-//       ...card,
-//       matched: true,
-//     }));
-//   };
-
-//   //FUNCION UBICA LAS CARTAS FLIPPED SIN MATCH
-//   const flippedCount = (array: CardsUpdated[]) => {
-//     return array.filter((card) => card.flipped && !card.matched);
-//   };
-
-//   //FUNCION AL HACER CLICK
-//   const turnCard = (event: MouseEvent<HTMLDivElement>) => {
-//     const id = +(event.target as HTMLDivElement).id;
-//     console.log(id);
-//     console.log(cardsRandom);
-//     console.log(flippedCards);
-
-//     // if (flippedCards.length < 2) {
-//     //   flippedTrue(cardsRandom);
-//     //   setFlippedCards(flippedCards.concat(cardsRandom[id]));
-//     //   console.log(flippedCards);
-//     // }
-// card.flipped = true;
-//     // flippedCount(cardsRandom);
-
-//     setCardsRandom(
-//       cardsRandom.map((card, index) => {
-//         if (
-//           index == id &&
-//           !card.matched &&
-//           flippedCount(cardsRandom).length < 2
-//         ) {
-//           flippedTrue;
-//           console.log("hola");
-
-//           if (
-//             flippedCount(cardsRandom).length == 2 &&
-//             compareCards(
-//               flippedCount(cardsRandom)[0].name,
-//               flippedCount(cardsRandom)[1].name
-//             )
-//           ) {
-//             console.log("hola otra vez");
-//             matchCards(flippedCount(cardsRandom));
-//             setCardsRandom(matchCards(flippedCount(cardsRandom)));
-//             console.log(matchCards(flippedCount(cardsRandom)));
-//           }
-//         }
-//         return card;
-//       })
-//     );
-//   };
-
-//   // if ( 0 flipped or 1 flipped && matched: false){
-//   // i can turncard
-//   // }
-
-//   useEffect(() => {
-//     const randomize = random(cards);
-//     const updatedCards: CardsUpdated[] = randomize.map((card) => ({
-//       ...card,
-//       flipped: false, // Agrega la nueva propiedad "flipped" con el valor "false"
-//       matched: false,
-//     }));
-//     setCardsRandom(updatedCards);
-//   }, []);
-
-//   //display: none
-
-//   return (
-//     <>
-//       <div>
-//         <h1>Superhero Memory Game</h1>
-//       </div>
-//       <div id="memory_board" role="cards">
-//         {cardsRandom.map((card, i) => (
-//           <div
-//             className="card"
-//             id={i.toString()}
-//             style={
-//               card.flipped
-//                 ? {
-//                     backgroundImage: `url(${imgRoute + card.img})`,
-//                   }
-//                 : { background: "#000" }
-//             }
-//             onClick={turnCard}
-//           >
-//             <p>{card.name}</p>
-//           </div>
-//         ))}
-//       </div>
-//       <div id="score">
-//         <h2>Score </h2>
-//         <p>
-//           Pairs Clicked: <span id="pairs_clicked">0</span>
-//         </p>
-//         <p>
-//           Pairs Guessed: <span id="pairs_guessed">0</span>
-//         </p>
-//       </div>
-//     </>
-//   );
-// };
